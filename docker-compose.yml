@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    restart: always
+    expose:
+      - "80"
+    networks:
+      - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.relayk-it.rule=Host(`relayk.it`)"
+      - "traefik.http.routers.relayk-it.entrypoints=websecure"
+      - "traefik.http.routers.relayk-it.tls.certresolver=letsencrypt"
+      - "traefik.http.services.relayk-it.loadbalancer.server.port=80"
+
+networks:
+  dokploy-network:
+    external: true
+
