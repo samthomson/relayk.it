@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: RelayKit is a self-hosted control panel for Nostr infrastructure — deploy relays, Blossom servers, nsite gateways etc. from one dashboard on your own server.
+description: RelayKit is a self-hosted control panel for Nostr infrastructure; deploy host and run: relays, Blossom servers, nsite gateways etc. from one dashboard on your own server.
 section: start
 order: 1
 ---
@@ -9,7 +9,9 @@ order: 1
 
 RelayKit is a simple UI for deploying Nostr services — relays, Blossom servers, nsite gateways, git hosting, notifications — on your own server, using [Dokploy](https://dokploy.com) under the hood.
 
-You install RelayKit once, then use it to spin up and manage as many Nostr services as you like without touching Dokploy, Docker or Traefik directly.
+You install RelayKit once, then use it to spin up and manage as many Nostr services as you like. It takes care of the tech (eg docker containers, port mappings, ssl, data, etc) - you control everything via a simple UI.
+
+The goal of RelayKit is to empower more people (and organisetions) to run their own nostr services. It does this by reducing the technical barrier to entry, so that more people can take ownership of their nostr experience and increase their soveriegnty.
 
 ```text
 Browser → RelayKit App → Dokploy API
