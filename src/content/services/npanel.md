@@ -9,7 +9,7 @@ media: []
 order: 6
 ---
 
-nPanel serves static sites published to Nostr (NIP-5A) and answers NIP-05 names on the same domain. Update your nsite from anywhere — changes are picked up automatically within ~10 minutes, or immediately via the service's refresh action.
+nPanel serves static sites published to Nostr (NIP-5A) and answers NIP-05 names on the same domain. Republish the nsite manifest event from anywhere — changes are picked up automatically within ~10 minutes, or immediately via the service's refresh action.
 
 <!-- TODO: walkthrough — publish a site from a client, watch it appear. Screenshot/video. -->
 
