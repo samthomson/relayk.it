@@ -35,6 +35,16 @@ Static **Astro 5** site, deployed as an **nsite** (NIP-5A static hosting on Nost
 - Accessibility: keyboard-navigable drawer, `aria-current` on nav, visible focus rings, `prefers-reduced-motion` respected by every animation.
 - After changes, run `npm run test`; for UI changes also browser-drive `npm run dev` and verify the affected surface.
 
+## Writing style
+
+Content is factual technical documentation, not marketing. Rules:
+
+- Be incredibly concise. No more words than needed. Cut every sentence that adds no information.
+- No marketing speak: no "you bring the domain", "empower", "seamless", "perfect for", no clever flourishes. Write like one engineer talking to another.
+- Describe what the product does, never how it works internally (no Dokploy/Traefik/docker details — they are background implementation, not user-facing).
+- No CLI/docker commands in user-facing docs — this is a GUI product; if a fix needs the terminal, it's a bug report, not documentation.
+- GUI-level accuracy only: verify claims against the actual `../relaykit` UI before writing them. Do not invent options (e.g. there is no certificate-type choice — TLS is automatic).
+
 ## Deploy
 
 `npm run nsite:publish` → `astro build` + nsyte upload with `--fallback=/404.html`.
