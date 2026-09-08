@@ -10,6 +10,5 @@ Connect your own domain to any service. RelayKit handles routing and certificate
 
 A service's config asks for its domain (e.g. `relay.example.com`). Point DNS at your server.
 
-## Changing it later
+Edit the domain on a service and save. Routing updates and the certificate is retried.
 
-Edit the domain on a service and save. Routing updates and the certificate is retried. [pulse](/services/pulse) uses a second domain for its push channel.
