@@ -1,25 +1,15 @@
 ---
 title: Domains & SSL
-description: Link any RelayKit service to a domain you already own. Let's Encrypt certificates in production, no-SSL mode for local development, and painless domain changes later.
+description: Link any RelayKit service to a domain you own. Routing and certificates are handled automatically.
 order: 1
 ---
 
-You bring the domain — bought wherever you like — and RelayKit links any service to it, wiring the routing
-and certificates. You never hand-edit Traefik.
+Connect your own domain to any service. RelayKit handles routing and certificates: TLS is automatic everywhere — Let's Encrypt in production, local certificates in development.
 
-## Setting a domain at deploy time
+## Setting a domain
 
-When you add a service, you choose:
+A service's config asks for its domain (e.g. `relay.example.com`). Point DNS at your server.
 
-- the **domain** it will answer on (e.g. `relay.example.com`)
-- the **certificate type**: **Let's Encrypt** in production, or **No SSL** for local/dev stacks
+## Changing it later
 
-## Changing a domain later
-
-Edit the domain on any existing service. RelayKit recreates the routing and redeploys the service — no container surgery. Some services (like [pulse](/services/pulse)) manage multiple domains at once (e.g. a separate domain for its bundled ntfy server).
-
-## Under the hood
-
-RelayKit calls Dokploy's domain APIs (`domain.create` / `domain.delete` + redeploy) and labels the Traefik routers. The Let's Encrypt resolver is Dokploy's default (`letsencrypt`); if your setup differs, the cert resolver label in the compose file is the one thing to adjust.
-
-<!-- TODO: screenshots of the domain dialog + a service live on its domain. -->
+Edit the domain on a service and save. Routing updates and the certificate is retried. [pulse](/services/pulse) uses a second domain for its push channel.
