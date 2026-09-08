@@ -9,8 +9,11 @@ export default defineConfig({
   trailingSlash: 'never',
   redirects: {
     '/apps/nsite-explorer': '/apps/npanel',
+    '/docs/local-https': '/install',
+    '/docs/your-first-service': '/install',
+    '/docs/updating': '/features/updates',
+    '/docs/troubleshooting': '/troubleshooting',
   },
-  integrations: [mdx(), sitemap()],
   build: {
     inlineStylesheets: 'never',
   },

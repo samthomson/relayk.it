@@ -13,4 +13,10 @@ RelayKit is deployed as a versioned Docker image, and the dashboard can update i
 - The control plane (RelayKit + Dokploy) restarts for a few seconds; **Traefik and all your hosted services keep running** throughout.
 - The dashboard shows an "updating" overlay and reconnects automatically when the new version is up. The update dialog includes release notes and status badges.
 
-See [Updating RelayKit](/docs/updating) for the walkthrough, and the [changelog](/changelog) for what shipped in each release.
+Prefer the terminal? On the server:
+
+```bash
+IMAGE_TAG=<version> ./scripts/deploy-image.sh
+```
+
+See the [changelog](/changelog) for what shipped in each release.

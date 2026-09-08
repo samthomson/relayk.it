@@ -13,12 +13,6 @@ You install RelayKit once, then use it to spin up and manage as many Nostr servi
 
 The goal of RelayKit is to empower more people (and organisetions) to run their own nostr services. It does this by reducing the technical barrier to entry, so that more people can take ownership of their nostr experience and increase their sovereignty.
 
-```text
-Browser → RelayKit App → Dokploy API
-```
-
-<!-- TODO: your pitch — why you built this, the self-sovereign infrastructure story, in your voice. -->
-
 ## Who it's for
 
 - **Self-hosters** — run your own relay, Blossom server or nsite gateway without hand-rolling Docker Compose, reverse proxies and certificates.
@@ -42,5 +36,5 @@ Every service in RelayKit is a curated preset: a Docker Compose template with se
 ## Where to go next
 
 - [Install RelayKit](/install) on a VPS (or locally for development)
-- [Deploy your first service](/docs/your-first-service)
+- Follow through to [deploying your first service](/install#deploy-your-first-service)
 - Browse the [services](/services) and [features](/features/domains)

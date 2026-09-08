@@ -1,0 +1,122 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+
+const headings = [
+  { depth: 2, slug: 'requirements', text: 'Requirements' },
+  { depth: 2, slug: 'server-install', text: 'Server install' },
+  { depth: 2, slug: 'local-install', text: 'Local install' },
+  { depth: 2, slug: 'local-https-on-any-domain', text: 'Local HTTPS on any domain' },
+  { depth: 2, slug: 'deploy-your-first-service', text: 'Deploy your first service' },
+];
+---
+
+<DocsLayout
+  title="Install"
+  description="Get RelayKit running — one command on any VPS for production, or a local Docker stack with real HTTPS for development."
+  section="Docs"
+  headings={headings}
+>
+  <h2 id="requirements">Requirements</h2>
+  <ul>
+    <li>A server (or local machine) with <strong>Docker</strong> installed</li>
+    <li>A <strong>Nostr pubkey</strong> you control (signable with a NIP-07 extension like Alby or nos2x)</li>
+    <li>For production: a domain, ports 80/443 open</li>
+  </ul>
+
+  <h2 id="server-install">Server install</h2>
+  <p>Paste your npub (or read it from your extension), pick RelayKit&rsquo;s domain, copy, run:</p>
+
+  <div id="install-builder" class="not-prose my-8 border border-border bg-card/80 p-6">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block">
+        <span class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Owner npub</span>
+        <div class="flex gap-2">
+          <input
+            id="ib-npub"
+            type="text"
+            spellcheck="false"
+            placeholder="npub1…"
+            class="w-full border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-[rgb(118,82,168)] focus:outline-none"
+          />
+          <button
+            id="ib-read"
+            type="button"
+            class="flex-shrink-0 border border-border px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors hover:border-[rgb(118,82,168)] hover:text-[rgb(118,82,168)]"
+          >
+            Read from extension
+          </button>
+        </div>
+      </label>
+      <label class="block">
+        <span class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Instance domain</span>
+        <input
+          id="ib-domain"
+          type="text"
+          spellcheck="false"
+          placeholder="rkit.example.com"
+          class="w-full border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-[rgb(118,82,168)] focus:outline-none"
+        />
+      </label>
+    </div>
+    <div class="relative mt-5">
+      <pre class="overflow-x-auto border border-border bg-[rgb(24,24,30)] p-4 text-xs leading-6 text-[rgb(226,226,236)] dark:bg-[hsl(270,7%,11%)] dark:text-[rgb(230,226,238)]"><code id="ib-command"></code></pre>
+      <button
+        id="ib-copy"
+        type="button"
+        class="absolute right-2 top-2 border border-border bg-background/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors hover:border-[rgb(118,82,168)] hover:text-[rgb(118,82,168)]"
+      >
+        Copy
+      </button>
+    </div>
+  </div>
+
+  <ol>
+    <li>Run the command on any fresh VPS — Vultr, DigitalOcean, Hetzner, even one you pay for in bitcoin.</li>
+    <li>
+      Point your domain&rsquo;s A record at the server (and keep it un-proxied until the certificate
+      issues — Traefik gets Let&rsquo;s Encrypt automatically).
+    </li>
+    <li>Open your domain. Sign in with your Nostr extension.</li>
+  </ol>
+
+  <h2 id="local-install">Local install</h2>
+  <p>The installer targets production; for local development you bring the stack up yourself:</p>
+  <pre><code>cp .env.example .env                       # dev defaults are fine as-is
+docker network create dokploy-network      # one-time, dev only
+docker compose --profile dev up</code></pre>
+  <p>Then provision auth with your npub (Dokploy comes up at <code>localhost:3020</code>, RelayKit at <code>localhost:5173</code>):</p>
+  <pre><code>OWNER_NPUB=npub1your... ADMIN_PASSWORD=your_secure_password ./scripts/setup-relaykit-auth.sh</code></pre>
+
+  <h2 id="local-https-on-any-domain">Local HTTPS on any domain</h2>
+  <p>
+    Local doesn&rsquo;t have to mean <code>localhost</code>. With mkcert, <code>https://reallyrelay.io</code>
+    can resolve to your machine — a proper <strong>nostr testnet</strong>.
+  </p>
+  <pre><code>brew install mkcert &amp;&amp; mkcert -install
+cp scripts/dev-domains.example.txt scripts/dev-domains.txt</code></pre>
+  <ol>
+    <li>Add the domain to <code>/etc/hosts</code> and <code>scripts/dev-domains.txt</code></li>
+    <li>Run <code>./scripts/gen-dev-certs.sh</code> (restart compose if it&rsquo;s running)</li>
+    <li>Create the service with that hostname — TLS is automatic (Caddy serves your mkcert certs)</li>
+  </ol>
+
+  <h2 id="deploy-your-first-service">Deploy your first service</h2>
+  <ol>
+    <li>
+      <strong>Pick a preset</strong> — hit <em>Add service</em> and choose from the catalog (start with
+      <a href="/services/strfry">strfry</a>)
+    </li>
+    <li>
+      <strong>Fill in its config</strong> — each preset mainly asks for its domain (e.g.
+      <code>relay.example.com</code>); make sure DNS points at your server
+    </li>
+    <li><strong>Deploy</strong> — certificates, routing and startup are handled for you</li>
+    <li>
+      <strong>Watch it come up</strong> — the card reflects real status; check
+      <a href="/features/insights">insights</a> or <a href="/features/logs">logs</a> if anything looks off
+    </li>
+  </ol>
+  <p>Then point a client at <code>wss://relay.example.com</code> and post.</p>
+</DocsLayout>
+
+<script src="@/scripts/install-builder.ts"></script>

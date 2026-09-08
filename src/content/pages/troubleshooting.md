@@ -1,7 +1,8 @@
 ---
 title: Troubleshooting
 description: When a service won't start, a domain won't resolve, or an update misbehaves — start here.
-order: 4
+section: reference
+order: 2
 ---
 
 ## A deploy failed but the card looks fine
@@ -23,5 +24,17 @@ docker compose exec relaykit sh -c 'printf "%s" "PASTE_THE_KEY_HERE" > /app/.rel
 ## Domain already in use
 
 A domain can only route to one service. Check existing projects for a conflicting route before reusing a hostname.
+
+
+## The setup script says "Registration failed"
+
+This only happens on re-runs where Dokploy already has an admin account (a fresh
+install registers one automatically — if that ever fails on a clean server, that's a bug worth
+reporting). To recover: log in to Dokploy directly → Settings → Profile → API/CLI, create an API key,
+then write it where RelayKit expects it:
+
+```bash
+docker compose exec relaykit sh -c 'printf "%s" "PASTE_THE_KEY_HERE" > /app/.relaykit/bootstrap-key'
+```
 
 <!-- TODO: grow this from real support questions as they come in. -->

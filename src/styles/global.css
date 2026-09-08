@@ -313,6 +313,13 @@
   @apply rounded-none border border-[rgba(118,82,168,0.25)] bg-[rgba(118,82,168,0.07)] px-1.5 py-0.5 font-normal text-[rgb(72,48,118)] dark:border-[rgba(167,139,250,0.25)] dark:bg-[rgba(167,139,250,0.1)] dark:text-[rgba(196,181,253,0.95)];
 }
 
+/* Tailwind typography decorates inline code with literal ` marks via
+ * pseudo-elements — kill them: the chip styling already says "code". */
+.rk-prose code::before,
+.rk-prose code::after {
+  content: none;
+}
+
 /* Dark-mode prose accents: lilac links + readable quote text over the dark
  * background (base invert handles body/headings). */
 .dark .rk-prose {

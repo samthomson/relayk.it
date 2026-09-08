@@ -13,7 +13,6 @@ export interface NavSection {
 type Feature = CollectionEntry<'features'>;
 type Service = CollectionEntry<'services'>;
 type App = CollectionEntry<'apps'>;
-type Guide = CollectionEntry<'guides'>;
 type Page = CollectionEntry<'pages'>;
 
 const byOrder = <T extends { data: { order: number } }>(a: T, b: T): number => a.data.order - b.data.order;
@@ -21,15 +20,14 @@ const byOrder = <T extends { data: { order: number } }>(a: T, b: T): number => a
 /**
  * The docs sidebar / mobile drawer tree. Sections are assembled from the
  * content collections so adding a page file adds it to the nav. Reference
- * pages (e.g. the changelog) are appended to the Guides section.
+ * pages (troubleshooting, changelog) are appended to the Docs section.
  */
 export async function getNav(): Promise<NavSection[]> {
-  const [pages, features, services, apps, guides] = await Promise.all([
+  const [pages, features, services, apps] = await Promise.all([
     getCollection('pages'),
     getCollection('features'),
     getCollection('services'),
     getCollection('apps'),
-    getCollection('guides'),
   ]);
 
   const startPages: Page[] = pages.filter((p) => p.data.section === 'start').sort(byOrder);
@@ -37,8 +35,12 @@ export async function getNav(): Promise<NavSection[]> {
 
   return [
     {
-      label: 'Getting Started',
-      items: startPages.map((p) => ({ label: p.data.title, href: `/${p.id}` })),
+      label: 'Docs',
+      items: [
+        ...startPages.map((p) => ({ label: p.data.title, href: `/${p.id}` })),
+        { label: 'Install', href: '/install' },
+        ...referencePages.map((p) => ({ label: p.data.title, href: `/${p.id}` })),
+      ],
     },
     {
       label: 'Features',
@@ -54,13 +56,6 @@ export async function getNav(): Promise<NavSection[]> {
     {
       label: 'Apps',
       items: apps.sort(byOrder).map((a: App) => ({ label: a.data.title, href: `/apps/${a.id}` })),
-    },
-    {
-      label: 'Guides',
-      items: [
-        ...guides.sort(byOrder).map((g: Guide) => ({ label: g.data.title, href: `/docs/${g.id}` })),
-        ...referencePages.map((p) => ({ label: p.data.title, href: `/${p.id}` })),
-      ],
     },
   ].filter((section) => section.items.length > 0);
 }

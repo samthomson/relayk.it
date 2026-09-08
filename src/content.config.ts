@@ -47,9 +47,4 @@ const apps = defineCollection({
   schema: baseSchema,
 });
 
-const guides = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/guides' }),
-  schema: baseSchema,
-});
-
-export const collections = { pages, features, services, apps, guides };
+export const collections = { pages, features, services, apps };
