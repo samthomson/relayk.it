@@ -1,15 +1,13 @@
 ---
 title: Relay explorer
-description: A phpMyAdmin-style console for Nostr relays — point it at any relay and inspect live events, filters and all.
-order: 1
+description: Inspect events on any Nostr relay.
+order: 2
 ---
 
-Think **phpMyAdmin for relays**: point it at any Nostr relay and watch what's actually on it — events by kind, author and recency, raw and live.
+Think **phpMyAdmin for relays**: point it at any Nostr relay and inspect what's on it — events by kind, author and recency.
 
-## Speaks plain Nostr
+It's the debugging tool for relays. A filter rejecting events? Whitelist blocking a pubkey? Deployment not accepting writes? Point the explorer at the relay and see exactly what is and isn't there.
 
-The explorer is built on raw protocol primitives — `REQ` filters over websocket, nothing proprietary — so it works with **any** conforming relay, not just the ones RelayKit deploys. That includes relays that gate reads or writes behind **NIP-42 auth**: when challenged, it signs `AUTH` with your key and carries on.
+Built on plain Nostr — REQ filters over websocket — so it works with any relay, including ones that gate access behind NIP-42 auth.
 
-Perfect for verifying a fresh relay is accepting events, or digging into what your whitelists and kind filters are letting through.
-
-<!-- TODO: screenshot of the console browsing a relay. -->
+<!-- TODO: screenshot. -->

@@ -13,13 +13,10 @@ const next = serviceNav.find((item) => item.href !== '/services');
 
 <DocsLayout
   title="Services"
-  description="Everything you can deploy with RelayKit — relays, media, gateways and tools, each one page with setup notes and configuration reference."
+  description="Everything you can deploy with RelayKit — relays, media, gateways and tools."
   section="Services"
 >
-  <p>
-    RelayKit deploys services from curated presets — Docker Compose templates with sane defaults, exposed
-    configuration, and domain routing baked in. Pick a service below to see what it does and how to run it.
-  </p>
+  <p>Every service, one page each with what it does and its configuration.</p>
 
   <div class="not-prose my-8 overflow-x-auto border border-border">
     <table class="w-full min-w-[640px] text-left text-sm">
@@ -55,17 +52,18 @@ const next = serviceNav.find((item) => item.href !== '/services');
   </div>
 
   <h2>Which relay should I run?</h2>
-  <p>
-    The three relay engines cover different jobs: <a href="/services/strfry">strfry</a> for raw performance and
-    general-purpose use, <a href="/services/nostr-rs-relay">nostr-rs-relay</a> when you want policy control
-    (pubkey whitelists, kind filtering, NIP-42 auth), and <a href="/services/chapar">chapar</a> for private chat
-    relays that only accept NIP-59 gift-wrapped events. You can run several side by side — that is the point.
-  </p>
+  <ul>
+    <li><a href="/services/strfry">strfry</a> — fast, general-purpose</li>
+    <li><a href="/services/nostr-rs-relay">nostr-rs-relay</a> — policy control: pubkey whitelists, kind filtering, NIP-42 auth</li>
+    <li><a href="/services/chapar">chapar</a> — chat only, NIP-59</li>
+    <li><a href="/services/nogringo">nogringo relay</a> — private messaging, auth-gated reads</li>
+  </ul>
+  <p>You can run several side by side.</p>
 
   {
     next && (
       <p class="mt-8 text-sm text-muted-foreground">
-        New services land regularly — <a href="/changelog">see the changelog</a> for what shipped lately.
+        Missing something? <a href="https://github.com/samthomson/relaykit/issues">Suggest a service</a> — new ones land regularly (<a href="/changelog">changelog</a>).
       </p>
     )
   }

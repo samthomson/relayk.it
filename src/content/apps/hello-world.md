@@ -1,13 +1,11 @@
 ---
 title: Hello World
-description: A standalone Nostr client bundled with every RelayKit install — write posts, attach images, schedule them for later.
+description: A light Nostr client for writing and scheduling posts.
 order: 1
 ---
 
-Hello World ships with every RelayKit install: a small, standalone Nostr client for **writing and scheduling posts** — published straight to your own relays (or any).
+A light Nostr client, focused only on posting. Included with every install.
 
-- Write a post, attach images, pick relays, publish
-- **Schedule posts** for later — set it and forget it
-- Image previews keep their aspect ratio (uniform height, natural width, as of [0.2.2](/changelog))
+Its distinctive feature is **scheduling**: write a post now, have it publish later. This works because RelayKit is always on — the scheduled post is signed by you when you create it, so no keys are ever stored on the server. When the time comes, RelayKit publishes the already-signed event to your relays.
 
-<!-- TODO: screenshots of composing + scheduled queue. Anything else it does. -->
+<!-- TODO: screenshots of composing + scheduled queue. -->

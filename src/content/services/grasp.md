@@ -1,6 +1,6 @@
 ---
 title: grasp
-description: Self-hosted git-over-nostr backend — a git host with an embedded relay (GRASP) and a built-in ngit repo explorer.
+description: Self-hosted git-over-nostr backend — a git host with an embedded relay and repo explorer.
 tagline: Git hosting over Nostr with embedded relay
 type: tools
 repo: https://gitworkshop.dev/danconwaydev.com/ngit-grasp
@@ -9,20 +9,16 @@ media: []
 order: 7
 ---
 
-grasp is a self-hosted **git-over-nostr** backend: push and clone repositories over Nostr, with an embedded relay (GRASP) and a built-in **ngit repo explorer** to browse what's hosted.
+grasp is a git host that speaks Nostr: push and clone over the network, with an embedded relay and a built-in repo explorer.
 
-<!-- TODO: the nostrified-git story — why git over nostr, how repos/branches map to events. Screenshot of the explorer. -->
+<!-- TODO: how repos/branches map to events. Screenshot of the explorer. -->
 
-## Deploying
+## Config
 
-From the dashboard: **Add service → grasp**. One domain serves both git traffic and the embedded relay.
+One domain serves both git traffic and the relay.
 
-| Config | Required | Description |
-| --- | --- | --- |
-| grasp domain | yes | e.g. `git.example.com` — serves git clone/push and the relay. |
-| relay name | no | Display name in the relay's NIP-11 info. Defaults to your domain. |
-| relay description | no | Short description for the NIP-11 info. |
-| bootstrap sync relay | no | A `wss://` relay to seed repo discovery; more relays are found automatically. |
-| accept contributor prs | no | Enable grasp-06 so anyone can push PR branches without pre-authorisation. |
-| repository whitelist | no | Comma-separated npub / npub-identifier / identifier. Empty = any repo that lists this server. |
-| blocked authors | no | Comma-separated npubs whose events are always rejected. |
+- grasp domain — e.g. `git.example.com`
+- relay name and description — optional, shown in NIP-11 info
+- bootstrap sync relay — optional, seeds repo discovery
+- accept contributor PRs — off by default
+- repository whitelist and blocked authors — optional access control

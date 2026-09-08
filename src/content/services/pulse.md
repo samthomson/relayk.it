@@ -1,25 +1,26 @@
 ---
 title: pulse
-description: Personal Nostr push notifications — mentions, replies, zaps and DMs to your phone as an installable PWA, over your own ntfy server.
+description: Personal push notifications for Nostr events — mentions, replies, zaps and DMs to your phone.
 tagline: Push notifications for Nostr events to your phone
 type: tools
-repo: https://github.com/samthomson/relaykit
+repo: https://github.com/samthomson/relaykit/tree/master/app/apps/notif-hub
 nips: []
 media: []
 order: 8
 ---
 
-pulse watches Nostr for the events you care about — **mentions, replies, zaps, DMs** — and pushes them to your device. Install it as a PWA on your phone; notifications ride on a bundled **ntfy** server (the Google-free push channel — the ntfy app on Android/GrapheneOS connects directly, no Play Services involved).
+pulse is a notification hub: it watches your relays and pushes what matters — mentions, replies, zaps, DMs — to your phone. You install it as an app (PWA) from its domain, set your identity, relays and rules inside it, and from then on the notifications arrive like any other app's.
 
-Identity, relay list and notification rules are configured inside the app itself.
+Delivery works two ways:
 
-<!-- TODO: screenshot of a push on a phone home screen + rules config. Note the two domains in DNS. -->
+- **Web push** — the standard route; on iOS this means native-style notifications straight from the installed app
+- **The bundled ntfy server** — for de-googled Android: the ntfy app holds its own connection, no Google Play Services involved, works on GrapheneOS
 
-## Deploying
+Both channels are part of the deployment — pick per device.
 
-From the dashboard: **Add service → pulse**. This one needs **two domains**:
+<!-- TODO: screenshot of a push on a phone home screen + rules config. -->
 
-| Config | Required | Description |
-| --- | --- | --- |
-| pulse domain | yes | e.g. `notifs.example.com` — open on your phone, add to home screen. |
-| ntfy domain | yes | e.g. `ntfy.example.com` — the bundled ntfy push server. |
+## Config
+
+- pulse domain — e.g. `notifs.example.com`; open on your phone to install
+- push domain — e.g. `push.example.com`; for the bundled ntfy server

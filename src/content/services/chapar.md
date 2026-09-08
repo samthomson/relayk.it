@@ -1,6 +1,6 @@
 ---
 title: chapar
-description: A Nostr relay that only accepts chat events (NIP-59) — built for private messaging backends.
+description: A Nostr relay that only accepts chat events (NIP-59).
 tagline: Chat-only relay for NIP-59 gift-wrapped events
 type: relay
 repo: https://github.com/dezh-tech/ddsr/tree/main/chapar
@@ -9,16 +9,12 @@ media: []
 order: 3
 ---
 
-Chapar (from the dezh-tech DDSR project) is a relay with a narrow job: it **only accepts chat-app events** — NIP-59 gift wrap and friends. Nothing else gets in, which keeps a messaging backend lean and private by construction.
+Chapar is a relay with a narrow job: it only accepts chat events — NIP-59 gift wrap and related kinds. Everything else is rejected, which keeps a private messaging backend lean by construction.
 
-<!-- TODO: expand — pairing with DM clients, why chat-only relays matter. Screenshot. -->
+<!-- TODO: pairing with DM clients. Screenshot. -->
 
-## Deploying
+## Config
 
-From the dashboard: **Add service → Chapar Relay**.
-
-| Config | Required | Description |
-| --- | --- | --- |
-| Relay Domain | yes | e.g. `relay.example.com` |
-| Owner Pubkey (hex) | no | The relay owner's public key |
-| Contact | no | Operator contact info (shown in relay metadata) |
+- relay domain — e.g. `relay.example.com`
+- owner pubkey — optional
+- contact info — optional, shown in relay metadata
