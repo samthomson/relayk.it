@@ -1,0 +1,90 @@
+---
+/**
+ * Projects & environments diagram — RelayKit contains projects,
+ * projects contain environments, environments contain the same services
+ * per project. Minimal, theme-aware SVG.
+ */
+const projects = [
+  {
+    name: 'personal',
+    x: 48,
+    envs: [
+      { name: 'production', y: 112, tiles: [{ label: 'relay', color: '#FBBF24' }, { label: 'relay', color: '#FBBF24' }, { label: 'blossom', color: '#E879F9' }] },
+      { name: 'testing', y: 212, dashed: true, tiles: [{ label: 'relay', color: '#FBBF24' }, { label: 'relay', color: '#FBBF24' }, { label: 'blossom', color: '#E879F9' }] },
+    ],
+  },
+  {
+    name: 'sideproject',
+    x: 368,
+    envs: [
+      { name: 'production', y: 112, tiles: [{ label: 'relay', color: '#FBBF24' }, { label: 'ngit', color: '#A78BFA' }, { label: 'nsite', color: '#71717A' }] },
+      { name: 'staging', y: 212, dashed: true, tiles: [{ label: 'relay', color: '#FBBF24' }, { label: 'ngit', color: '#A78BFA' }, { label: 'nsite', color: '#71717A' }] },
+    ],
+  },
+];
+---
+
+<div class="not-prose my-6 overflow-x-auto">
+  <svg
+    viewBox="0 0 700 340"
+    class="mx-auto aspect-[700/340] min-w-[560px] max-w-2xl w-full"
+    role="img"
+    aria-label="RelayKit contains two projects, each with a production and a lower environment holding the same set of services."
+  >
+    <rect x="16" y="16" width="668" height="308" fill="rgba(118, 82, 168, 0.05)" stroke="#A78BFA" stroke-opacity="0.8" stroke-width="1.5"></rect>
+    <text x="32" y="44" class="pj-kit" fill="#A78BFA">RELAYKIT</text>
+
+    {
+      projects.map((p) => (
+        <g>
+          <text x={p.x} y="84" class="pj-project" fill="hsl(var(--foreground))">{p.name}</text>
+          <rect x={p.x} y="96" width="286" height="216" fill="none" stroke="hsl(var(--foreground))" stroke-opacity="0.45" />
+          {p.envs.map((e) => (
+            <g>
+              <rect
+                x={p.x + 14}
+                y={e.y}
+                width="258"
+                height="88"
+                fill="hsl(var(--card))"
+                stroke="hsl(var(--border))"
+                stroke-dasharray={e.dashed ? '5 4' : undefined}
+              />
+              <text x={p.x + 26} y={e.y + 21} class="pj-env" fill="rgba(118,82,168,0.95)">{e.name}</text>
+              {e.tiles.map((t, i) => (
+                <g>
+                  <rect x={p.x + 26 + i * 82} y={e.y + 34} width="74" height="28" fill="none" stroke={t.color} stroke-opacity="0.85" />
+                  <text x={p.x + 33 + i * 82} y={e.y + 52} class="pj-svc" fill={t.color}>{t.label}</text>
+                </g>
+              ))}
+            </g>
+          ))}
+        </g>
+      ))
+    }
+  </svg>
+</div>
+
+<style>
+  .pj-kit {
+    font-family: 'Ethnocentric', 'SFMono-Regular', Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+  }
+  .pj-project {
+    font-family: 'SFMono-Regular', Menlo, monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .pj-env {
+    font-family: 'SFMono-Regular', Menlo, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .pj-svc {
+    font-family: 'SFMono-Regular', Menlo, monospace;
+    font-size: 10px;
+  }
+</style>

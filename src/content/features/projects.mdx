@@ -1,0 +1,15 @@
+---
+title: Projects & environments
+description: Group services into projects, split work into environments.
+order: 5
+---
+
+import ProjectsDiagram from '@/components/ProjectsDiagram.astro';
+
+Services can be grouped into projects, and each project can hold several environments. It's a way to keep things tidy when you run more than a couple of services.
+
+For example: a **personal** project with a production environment for your live relay and Blossom, and a **testing** environment for trying things before they matter. Or separate projects per domain — one for `example.com`, one for `sideproject.io`.
+
+<ProjectsDiagram />
+
+Use as much or as little of this as you want — a single project with everything in it works fine too.

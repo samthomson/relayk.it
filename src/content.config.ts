@@ -22,7 +22,7 @@ const pages = defineCollection({
 });
 
 const features = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/features' }),
+  loader: glob({ pattern: ['**/*.md', '**/*.mdx'], base: './src/content/features' }),
   schema: baseSchema,
 });
 

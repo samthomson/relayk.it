@@ -7,12 +7,15 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://relayk.it',
   trailingSlash: 'never',
+  integrations: [mdx(), sitemap()],
   redirects: {
     '/apps/nsite-explorer': '/apps/npanel',
     '/docs/local-https': '/install',
     '/docs/your-first-service': '/install',
     '/docs/updating': '/features/updates',
     '/docs/troubleshooting': '/troubleshooting',
+    '/features/one-command-install': '/install',
+    '/features/logs': '/features/insights',
   },
   build: {
     inlineStylesheets: 'never',
