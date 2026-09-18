@@ -4,6 +4,8 @@ import NostrEventsBackground from '@/components/NostrEventsBackground.astro';
 import Icon from '@/components/Icon.astro';
 import ArchDiagram from '@/components/ArchDiagram.astro';
 import { brandAccent } from '@/lib/brandAccents';
+import { fetchNotes, type EmbeddedNote } from '@/lib/notes';
+import NoteCard from '@/components/NoteCard.astro';
 type StyleRecord = Record<string, string>;
 
 const GITHUB_URL = 'https://github.com/samthomson/relaykit';
@@ -147,6 +149,7 @@ const apps = [
   },
 ] as const;
 
+const notes: EmbeddedNote[] = await fetchNotes();
 ---
 
 <BaseLayout
@@ -383,6 +386,38 @@ const apps = [
     </div>
   </section>
 
+
+
+  <!-- Building in public -->
+  {
+    notes.length > 0 && (
+      <section class="border-t border-border px-6 py-20">
+        <div class="mx-auto max-w-6xl">
+          <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 class="text-3xl font-bold text-foreground">
+                <span class="rk-section-title inline-block">Actively used &amp; developed</span>
+              </h2>
+            </div>
+            <a
+              href="https://ditto.pub/follow/npub1yzfm42rzr3dj2h50flpvdl0uzrv22kv2y4ghve804w5xqu6lzqcqkyfxu5"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="rk-link inline-flex items-center gap-2 border-b-2 border-[rgba(118,82,168,0.4)] pb-1 text-sm"
+            >
+              Follow @sam
+              <Icon name="arrow-right" class="h-3.5 w-3.5" />
+            </a>
+          </div>
+          <div class="grid gap-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+            {notes.slice(0, 6).map((n: EmbeddedNote) => (
+              <NoteCard note={n} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- Final CTA -->
   <section class="relative isolate border-t border-border px-6 py-24 sm:py-32">

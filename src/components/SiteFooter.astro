@@ -37,7 +37,7 @@ const columns: { label: string; links: FooterLink[] }[] = [
       { label: 'Clone over nostr (grasp)', href: GRASP_URL, external: true },
       { label: 'Report an issue', href: `${GITHUB_URL}/issues/new`, external: true },
       { label: 'Suggest a feature', href: `${GITHUB_URL}/issues/new`, external: true },
-      { label: 'Hosted on RelayKit', href: 'https://relayk.it', external: true },
+      { label: 'Hosted on itself', href: '/services/npanel' },
     ],
   },
 ];
@@ -53,6 +53,10 @@ const columns: { label: string; links: FooterLink[] }[] = [
         </a>
         <p class="max-w-xs text-sm leading-relaxed text-muted-foreground">
           Deploy and manage Nostr relays, Blossom servers, nsite gateways and more — from one dashboard on your own server.
+        </p>
+        <p class="max-w-xs text-xs leading-relaxed text-muted-foreground/80">
+          This site is itself an nsite — published to Nostr (NIP-5A, kind 15128), files on Blossom, served by
+          RelayKit&rsquo;s own nPanel.
         </p>
       </div>
 

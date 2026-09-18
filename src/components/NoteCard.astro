@@ -1,0 +1,81 @@
+---
+/**
+ * A single embedded Nostr note card. Compact: images are extracted from the
+ * content and rendered (up to 3) instead of their URLs; text is curtailed.
+ * Content is escaped, URLs linkified, nostr: mentions shortened.
+ */
+import type { EmbeddedNote } from '@/lib/notes';
+
+interface Props {
+  note: EmbeddedNote;
+}
+
+const { note } = Astro.props;
+
+const IMAGE_RE = /https?:\/\/\S+\.(png|jpe?g|gif|webp)/gi;
+
+// all image urls, in content order
+const images = [...note.content.matchAll(IMAGE_RE)].map((m) => m[0]);
+const shown = images.slice(0, 3);
+const extra = images.length - shown.length;
+
+// strip image urls from the text so they don't render twice
+const textOnly = note.content.replace(IMAGE_RE, '').replace(/\s{2,}/g, ' ').trim();
+
+const esc = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+// curtail at word boundary
+const MAX = 200;
+const curtailed =
+  textOnly.length > MAX ? textOnly.slice(0, MAX).replace(/\s+\S*$/, '') + '…' : textOnly;
+
+const linkified = esc(curtailed)
+  .replace(/https?:\/\/\S+/g, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer" class="rk-link text-foreground">${url.length > 34 ? url.slice(0, 32) + '…' : url}</a>`)
+  .replace(/nostr:(npub1[a-z0-9]+)/g, (_m, npub) => `<span class="text-muted-foreground">@${npub.slice(5, 12)}…</span>`);
+
+const date = new Date(note.createdAt * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const link = `https://njump.me/${note.id}`;
+---
+
+<article class="rk-card-hover flex h-full flex-col border border-border bg-card/80 p-4">
+  <div class="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70">{date}</div>
+
+  {
+    shown.length === 1 && (
+      <img src={shown[0]} alt="" loading="lazy" class="mb-3 max-h-36 w-full border border-border object-cover" />
+    )
+  }
+  {
+    shown.length === 2 && (
+      <div class="mb-3 grid grid-cols-2 gap-1">
+        {shown.map((src) => (
+          <img src={src} alt="" loading="lazy" class="h-24 w-full border border-border object-cover" />
+        ))}
+      </div>
+    )
+  }
+  {
+    shown.length === 3 && (
+      <div class="mb-3 grid grid-cols-3 gap-1">
+        {shown.map((src) => (
+          <img src={src} alt="" loading="lazy" class="h-16 w-full border border-border object-cover" />
+        ))}
+      </div>
+    )
+  }
+
+  <p class="flex-1 text-xs leading-relaxed text-foreground" set:html={linkified} />
+
+  <div class="mt-3 flex items-center justify-between">
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1 border-b border-[rgba(118,82,168,0.4)] pb-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors hover:text-[rgb(118,82,168)]"
+    >
+      View
+    </a>
+    {extra > 0 && <span class="text-[10px] text-muted-foreground/60">+{extra} image{extra > 1 ? 's' : ''}</span>}
+  </div>
+</article>
