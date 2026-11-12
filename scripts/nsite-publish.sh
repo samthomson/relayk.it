@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Deploy the site: builds with Astro, publishes via nsyte.
+# Deploy the site: builds with Astro, publishes via nsyte as the named site
+# "relaykit" (kind 35128, d=relaykit). NEVER deploys the root site (kind 15128).
+# Relays and blossom servers come from .nsite/config.json (override with -r/-s).
 #
-# Signing: NSITE_BUNKER in .env holds a persistent nbunksec1… string
-# (minted once via `.tools/nsyte-0.28.0/nsyte ci 'bunker://…'`) — the same
-# client identity is presented on every deploy, so the bunker keeps accepting
-# it. A raw bunker:// URL also works but its secret is single-use.
+# Signing: you are prompted for the site key each run (nsec / nbunksec / fresh
+# bunker:// URL from your signer) — hidden input, never stored.
+# NSYTE_FORCE_ENCRYPTED_STORAGE keeps nsyte itself out of the macOS Keychain
+# (its default saves every --sec key there, triggering password prompts).
 #
 # Extra nsyte args pass straight through, e.g. target a single server:
 #   npm run nsite:publish -- -s https://blossom.relayk.it -r wss://relay.samt.st
@@ -21,19 +23,16 @@ if [[ ! -x "$ASTRO" ]]; then
   echo "Run npm install first." >&2
   exit 1
 fi
+export NSYTE_FORCE_ENCRYPTED_STORAGE=true
 
-if [[ -f .env ]]; then
-  set -a
-  # shellcheck disable=SC1091
-  . ./.env
-  set +a
-fi
-
-if [[ -z "${NSITE_BUNKER:-}" ]]; then
-  echo "Missing NSITE_BUNKER in .env — mint one once with:" >&2
-  echo "  ${NSYTE_DIR}/nsyte ci 'bunker://…'   # fresh URL from your signing app" >&2
-  exit 1
-fi
+echo -n "Site key (nsec…, nbunksec1… or bunker://…): "
+read -rs SECRET
+echo ""
+case "$SECRET" in
+  "")  echo "No secret entered — aborting." >&2; exit 1 ;;
+  nsec1*|nbunksec1*|bunker://*) ;;
+  *)   echo "That doesn't look like an nsec / nbunksec / bunker URL — aborting." >&2; exit 1 ;;
+esac
 
 ensure_nsyte() {
   if [[ -x "$NSYTE_BIN" ]]; then
@@ -60,7 +59,7 @@ ensure_nsyte() {
 echo "✓ Built $(find dist -name '*.html' | wc -l | tr -d ' ') pages"
 ensure_nsyte
 
-DEPLOY_ARGS=(deploy dist --sec "$NSITE_BUNKER" --fallback=/404.html --skip-secrets-scan --non-interactive --sync)
+DEPLOY_ARGS=(deploy dist --name relaykit --sec "$SECRET" --fallback=/404.html --skip-secrets-scan --non-interactive --sync)
 
 LOG="$(mktemp)"
 DEPLOY_PID=""
@@ -79,6 +78,11 @@ done
 if wait "$DEPLOY_PID"; then
   echo ""
   echo "✓ Deployed — https://relayk.it (gateway refreshes within ~10 min)"
+  RELAYS=$(awk '/Relay Manifest Publish Results/{getline; print; exit}' "$LOG")
+  SERVERS=$(awk '/Blossom Server Summary/{getline; print; exit}' "$LOG")
+  [[ -n "$RELAYS" ]] && echo "Relays:  $RELAYS"
+  [[ -n "$SERVERS" ]] && echo "Servers: $SERVERS"
+  grep -E '^(Overall|Sync):' "$LOG" || true
   grep -E '^\[ERROR\]|✗' "$LOG" | head -10 || true
   WARNS=$(grep -c '^\[WARN\]' "$LOG" || true)
   [[ "$WARNS" -gt 0 ]] && echo "($WARNS warnings suppressed)"
